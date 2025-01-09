@@ -13,16 +13,6 @@ if tycoon == nil then
     return
 end
 
-if not _G.antiafk then
-    _G.antiafk = true
-    local vu = game:GetService("VirtualUser")
-    game:GetService("Players").LocalPlayer.Idled:connect(function()
-        vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-        wait(1)
-        vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-    end)
-end
-
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name 
