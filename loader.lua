@@ -1,5 +1,5 @@
 local success, result = pcall(function()
-    local scriptUrl = "https://raw.githubusercontent.com/Alpisc/rblx-scripts/refs/heads/main/" .. game.PlaceId ..".lua"
+    local scriptUrl = "https://raw.githubusercontent.com/Alpisc/rblx-scripts/refs/heads/main/games/" .. game.PlaceId ..".lua"
     local scriptContent = game:HttpGet(scriptUrl)
     return loadstring(scriptContent)()
 end)
