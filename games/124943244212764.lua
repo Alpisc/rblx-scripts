@@ -14,11 +14,11 @@ if tycoon == nil then
     return
 end
 
-_G.autoPurchase = false
 _G.autoCollectMoney = false
+_G.autoPurchase = false
 
-_G.purchaseCooldown = 1
 _G.moneyClaimCooldown = 3
+_G.purchaseCooldown = 1
 
 _G.useTeleport = false
 
@@ -52,7 +52,7 @@ local SettingsTab = Window:CreateTab("Settings")
 
 local moneyClaimCooldown = MainTab:CreateInput({
     Name = "Money Claim Delay (in seconds)",
-    CurrentValue = 3,
+    CurrentValue = _G.moneyClaimCooldown,
     PlaceholderText = "Money Claim Delay",
     RemoveTextAfterFocusLost = false,
     Callback = function(Text)
@@ -62,7 +62,7 @@ local moneyClaimCooldown = MainTab:CreateInput({
 
 local autoCollectMoney = MainTab:CreateToggle({
     Name = "Auto Collect Money",
-    CurrentValue = false,
+    CurrentValue = _G.autoCollectMoney,
     Callback = function(Value)
         _G.autoCollectMoney = Value
         while _G.autoCollectMoney do
@@ -90,7 +90,7 @@ local autoCollectMoney = MainTab:CreateToggle({
 
 local purchaseCooldown = MainTab:CreateInput({
     Name = "Purchase Delay (in seconds)",
-    CurrentValue = 1,
+    CurrentValue = _G.purchaseCooldown,
     PlaceholderText = "Purchase Delay",
     RemoveTextAfterFocusLost = false,
     Callback = function(Text)
@@ -100,7 +100,7 @@ local purchaseCooldown = MainTab:CreateInput({
 
 local autoPurchase = MainTab:CreateToggle({
     Name = "Auto Purchase",
-    CurrentValue = false,
+    CurrentValue = _G.autoPurchase,
     Callback = function(Value)
         _G.autoPurchase = Value
         while _G.autoPurchase do
@@ -142,7 +142,7 @@ local autoPurchase = MainTab:CreateToggle({
 
 local useTeleportSetting = SettingsTab:CreateToggle({
     Name = "Use Teleport instead of FireTouchInterest",
-    CurrentValue = false,
+    CurrentValue = _G.useTeleport,
     Callback = function(Value)
         _G.useTeleport = Value
     end,
