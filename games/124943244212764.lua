@@ -20,8 +20,13 @@ _G.autoCollectMoney = false
 _G.purchaseCooldown = 0.5
 _G.moneyClaimCooldown = 3
 
-tycoon:FindFirstChild("GoldifyButtons"):Destroy()
-tycoon:FindFirstChild("DiamondifyButtons"):Destroy()
+if tycoon:FindFirstChild("GoldifyButtons") then
+    tycoon:FindFirstChild("GoldifyButtons"):Destroy()
+end
+if tycoon:FindFirstChild("DiamondifyButtons") then
+    tycoon:FindFirstChild("DiamondifyButtons"):Destroy()
+end
+
 
 local function parsePrice(str)
     str = str:gsub("%$", "")
