@@ -49,7 +49,7 @@ local MainTab = Window:CreateTab("Main")
 
 local moneyClaimCooldown = MainTab:CreateInput({
     Name = "Money Claim Delay (in seconds)",
-    CurrentValue = 10,
+    CurrentValue = 3,
     PlaceholderText = "Money Claim Delay",
     RemoveTextAfterFocusLost = false,
     Callback = function(Text)
