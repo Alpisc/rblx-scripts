@@ -5,7 +5,7 @@ local success, result = pcall(function()
 end)
 
 if not success then
-    warn("No script for this game found")
+    warn("No script for " .. game.PlaceId.. " found")
     return
 end
 
