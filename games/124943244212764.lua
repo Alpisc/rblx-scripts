@@ -20,6 +20,8 @@ _G.autoCollectMoney = false
 _G.purchaseCooldown = 1
 _G.moneyClaimCooldown = 3
 
+_G.useTeleport = false
+
 if tycoon:FindFirstChild("GoldifyButtons") then
     tycoon:FindFirstChild("GoldifyButtons"):Destroy()
 end
@@ -46,6 +48,7 @@ local Window = Rayfield:CreateWindow({
 })
 
 local MainTab = Window:CreateTab("Main")
+local SettingsTab = Window:CreateTab("Settings")
 
 local moneyClaimCooldown = MainTab:CreateInput({
     Name = "Money Claim Delay (in seconds)",
@@ -67,10 +70,13 @@ local autoCollectMoney = MainTab:CreateToggle({
                 if v:IsA("Model") and _G.autoCollectMoney then
                     for _2,v2 in v.Collectors:GetChildren() do
                         if v2:IsA("Model") and _G.autoCollectMoney then
-                            --lp.Character.HumanoidRootPart.CFrame = v2.ZonePart.CFrame + Vector3.new(0,10,0)
-                            firetouchinterest(lp.Character.HumanoidRootPart, v2.ZonePart, 0)
-                            wait(0.1)
-                            firetouchinterest(lp.Character.HumanoidRootPart, v2.ZonePart, 1)
+                            if _G.useTeleport then
+                                lp.Character.HumanoidRootPart.CFrame = v2.ZonePart.CFrame + Vector3.new(0,10,0)
+                            else
+                                firetouchinterest(lp.Character.HumanoidRootPart, v2.ZonePart, 0)
+                                wait(0.1)
+                                firetouchinterest(lp.Character.HumanoidRootPart, v2.ZonePart, 1)
+                            end
                             wait(1)
                             break
                         end
@@ -116,10 +122,13 @@ local autoPurchase = MainTab:CreateToggle({
 
                         if v2:FindFirstChild("Press") and parsePrice(v2.Press.Info.Price.TextLabel.Text) <= game.Players.LocalPlayer.leaderstats.Money.Value and _G.autoPurchase then
                             pcall(function()
-                                --lp.Character.HumanoidRootPart.CFrame = v2.Press.CFrame + Vector3.new(0,5,0)
-                                firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 0)
-                                wait(0.1)
-                                firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 1)
+                                if _G.useTeleport then
+                                    lp.Character.HumanoidRootPart.CFrame = v2.Press.CFrame + Vector3.new(0,5,0)
+                                else
+                                    firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 0)
+                                    wait(0.1)
+                                    firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 1)
+                                end
                                 wait(_G.purchaseCooldown)
                             end)
                         end
@@ -128,5 +137,13 @@ local autoPurchase = MainTab:CreateToggle({
                 end
             end
         end
+    end,
+})
+
+local useTeleportSetting = SettingsTab:CreateToggle({
+    Name = "Use Teleport instead of FireTouchInterest",
+    CurrentValue = false,
+    Callback = function(Value)
+        _G.useTeleport = Value
     end,
 })
