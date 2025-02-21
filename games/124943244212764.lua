@@ -18,7 +18,7 @@ _G.autoPurchase = false
 _G.autoCollectMoney = false
 
 _G.purchaseCooldown = 0.5
-_G.moneyClaimCooldown = 10
+_G.moneyClaimCooldown = 3
 
 pcall(function()
     tycoon.GoldifyButtons:Destroy()
@@ -80,9 +80,9 @@ local autoCollectMoney = MainTab:CreateToggle({
 })
 
 local purchaseCooldown = MainTab:CreateInput({
-    Name = "Teleport Delay (in seconds)",
+    Name = "Purchase Delay (in seconds)",
     CurrentValue = 0.5,
-    PlaceholderText = "Teleport Delay",
+    PlaceholderText = "Purchase Delay",
     RemoveTextAfterFocusLost = false,
     Callback = function(Text)
         _G.purchaseCooldown = tonumber(Text)
