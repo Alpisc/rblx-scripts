@@ -1,11 +1,9 @@
-local success, result = pcall(function()
-    local scriptUrl = "https://raw.githubusercontent.com/Alpisc/rblx-scripts/refs/heads/main/games/" .. game.PlaceId ..".lua"
-    local scriptContent = game:HttpGet(scriptUrl)
-    return loadstring(scriptContent)()
+local success = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Alpisc/rblx-scripts/refs/heads/main/games/" .. game.PlaceId ..".lua"))()
 end)
 
 if not success then
-    warn("No script for " .. game.PlaceId.. " found")
+    warn("No script for " .. game.PlaceId .. " found")
     return
 end
 
