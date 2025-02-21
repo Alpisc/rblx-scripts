@@ -17,7 +17,7 @@ end
 _G.autoPurchase = false
 _G.autoCollectMoney = false
 
-_G.purchaseCooldown = 0.5
+_G.purchaseCooldown = 1
 _G.moneyClaimCooldown = 3
 
 if tycoon:FindFirstChild("GoldifyButtons") then
@@ -84,7 +84,7 @@ local autoCollectMoney = MainTab:CreateToggle({
 
 local purchaseCooldown = MainTab:CreateInput({
     Name = "Purchase Delay (in seconds)",
-    CurrentValue = 0.5,
+    CurrentValue = 1,
     PlaceholderText = "Purchase Delay",
     RemoveTextAfterFocusLost = false,
     Callback = function(Text)
@@ -115,11 +115,13 @@ local autoPurchase = MainTab:CreateToggle({
                         end
 
                         if v2:FindFirstChild("Press") and parsePrice(v2.Press.Info.Price.TextLabel.Text) <= game.Players.LocalPlayer.leaderstats.Money.Value and _G.autoPurchase then
-                            --lp.Character.HumanoidRootPart.CFrame = v2.Press.CFrame + Vector3.new(0,5,0)
-                            firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 0)
-                            wait(0.1)
-                            firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 1)
-                            wait(_G.purchaseCooldown)
+                            pcall(function()
+                                --lp.Character.HumanoidRootPart.CFrame = v2.Press.CFrame + Vector3.new(0,5,0)
+                                firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 0)
+                                wait(0.1)
+                                firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 1)
+                                wait(_G.purchaseCooldown)
+                            end)
                         end
                         wait(0.1)
                     end
