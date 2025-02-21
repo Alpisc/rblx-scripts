@@ -25,6 +25,14 @@ pcall(function()
     tycoon.DiamondifyButtons:Destroy()
 end)
 
+local function parsePrice(str)
+    str = str:gsub("%$", "")
+    local suffix = str:sub(-1)
+    local numStr = (suffix == "K" or suffix == "M") and str:sub(1, -2) or str
+    local num = tonumber(numStr)
+    return num and (suffix == "K" and num * 1e3 or suffix == "M" and num * 1e6 or num)
+end
+
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name 
@@ -100,8 +108,7 @@ local autoPurchase = MainTab:CreateToggle({
                             lp.Character.HumanoidRootPart.CFrame = game.Workspace.GuideArrow.Attachment0.CFrame 
                         end
 
-
-                        if v2:FindFirstChild("Press") and tonumber((string.gsub(v2.Press.Info.Price.TextLabel.Text, "%D", ""))) <= game.Players.LocalPlayer.leaderstats.Money.Value and _G.autoPurchase then
+                        if v2:FindFirstChild("Press") and parsePrice(v2.Press.Info.Price.TextLabel.Text) <= game.Players.LocalPlayer.leaderstats.Money.Value and _G.autoPurchase then
                             lp.Character.HumanoidRootPart.CFrame = v2.Press.CFrame + Vector3.new(0,5,0)
                             wait(_G.purchaseCooldown)
                         end
