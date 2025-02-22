@@ -40,7 +40,7 @@ end
 
 local function teleport(part)
     if _G.useTeleport then
-        lp.Character.HumanoidRootPart.CFrame = part.CFrame + Vector3.new(0,5,0)
+        lp.Character.HumanoidRootPart.CFrame = part.CFrame + Vector3.new(0,10,0)
     else
         firetouchinterest(lp.Character.HumanoidRootPart, part, 0)
         wait(0.1)
