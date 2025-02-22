@@ -3,8 +3,8 @@ local lp = game.Players.LocalPlayer
 local function getTycoonPlot()
     for _,v in ipairs(game:GetService("Workspace").Tycoons:GetChildren()) do
         for _2,v2 in ipairs(v:GetChildren()) do
-            for _3,v3 in ipairs(v3:GetChildren()) do
-                if v3.Collectors.Collector.CollectorGui.MainFrame.Title.Text == lp.Name .. "'s Mansion" then
+            for _3,v3 in ipairs(v2:GetChildren()) do
+                if v3:FindFirstChild("Collectors") and v3.Collectors.Collector.CollectorGui.MainFrame.Title.Text == lp.Name .. "'s Mansion" then
                     return v3
                 end
             end
@@ -19,6 +19,9 @@ if tycoon == nil then
     warn("No tycoon found! Claim a tycoon and run the script again!")
     return
 end
+
+_G.moneyClaimCooldown = 3
+_G.autoCollectMoney = false
 
 _G.useTeleport = false
 
@@ -59,6 +62,28 @@ local autoLetter = MainTab:CreateButton({
                 teleport(v.Letter)
                 wait(0.5)
             end
+        end
+    end,
+})
+
+local moneyClaimCooldown = MainTab:CreateInput({
+    Name = "Money Claim Delay (in seconds)",
+    CurrentValue = _G.moneyClaimCooldown,
+    PlaceholderText = "Money Claim Delay",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(Text)
+        _G.moneyClaimCooldown = tonumber(Text)
+    end,
+})
+
+local autoCollectMoney = MainTab:CreateToggle({
+    Name = "Auto Collect Money",
+    CurrentValue = _G.autoCollectMoney,
+    Callback = function(Value)
+        _G.autoCollectMoney = Value
+        while _G.autoCollectMoney do
+            
+            wait(_G.moneyClaimCooldown)
         end
     end,
 })
