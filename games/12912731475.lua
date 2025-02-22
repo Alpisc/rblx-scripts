@@ -5,6 +5,12 @@ local function getTycoonPlot()
         for _2,v2 in ipairs(v:GetChildren()) do
             for _3,v3 in ipairs(v2:GetChildren()) do
                 if v3:FindFirstChild("Collectors") and v3.Collectors.Collector.CollectorGui.MainFrame.Title.Text == lp.Name .. "'s Mansion" then
+                    if v3:FindFirstChild("GlobalButtons") then
+                        v3.GlobalButtons:Destroy()
+                    end
+                    if v3:FindFirstChild("GoldifyButtons") then
+                        v3.GoldifyButtons:Destroy()
+                    end
                     return v3
                 end
             end
@@ -19,7 +25,6 @@ if tycoon == nil then
     warn("No tycoon found! Claim a tycoon and run the script again!")
     return
 end
-
 _G.moneyClaimCooldown = 3
 _G.autoCollectMoney = false
 
