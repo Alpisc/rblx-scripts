@@ -25,6 +25,9 @@ if tycoon == nil then
     warn("No tycoon found! Claim a tycoon and run the script again!")
     return
 end
+
+lp.PlayerGui.ShopGui.Enabled = false
+
 _G.moneyClaimCooldown = 3
 _G.autoCollectMoney = false
 
