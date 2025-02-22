@@ -70,12 +70,12 @@ local autoLetter = MainTab:CreateToggle({
         _G.autoLetter = Value
         while _G.autoLetter do
             for i,v in ipairs(game.Workspace:GetChildren()) do
-                if v:FindFirstChild("Letter") and _G.autoLetter then
+                if _G.autoLetter and v:FindFirstChild("Letter") then
                     teleport(v.Letter, true)
                     wait(0.5)
                 end
             end
-            wait(4)
+            wait(5)
         end
     end,
 })
@@ -96,7 +96,7 @@ local autoCollectMoney = MainTab:CreateToggle({
     Callback = function(Value)
         _G.autoCollectMoney = Value
         while _G.autoCollectMoney do
-            if tycoon:FindFirstChild("Collectors"):FindFirstChild("Collector") then
+            if _G.autoCollectMoney and tycoon:FindFirstChild("Collectors"):FindFirstChild("Collector") then
                 teleport(tycoon.Collectors.Collector.Touch)
                 wait(_G.moneyClaimCooldown)
             else 
@@ -125,7 +125,7 @@ local autoPurchaseButtons = MainTab:CreateToggle({
         while _G.autoPurchaseButtons do
             if tycoon:FindFirstChild("Buttons") then
                 for i,v in ipairs(tycoon.Buttons:GetChildren()) do
-                    if parsePrice(v.ButtonGui.Value.MainFrame.ItemPrice.Text) <= lp.leaderstats.Money.Value then
+                    if _G.autoPurchaseButtons and parsePrice(v.ButtonGui.Value.MainFrame.ItemPrice.Text) <= lp.leaderstats.Money.Value then
                         teleport(v.Touch)
                         wait(autoPurchaseCooldown)
                     end
