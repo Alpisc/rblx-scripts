@@ -33,8 +33,9 @@ local function parsePrice(str)
     return num and (suffix == "K" and num * 1e3 or suffix == "M" and num * 1e6 or num)
 end
 
-local function teleport(part)
-    if _G.useTeleport then
+local function teleport(part, forceLegacy)
+    forceLegacy = forceLegacy or false
+    if _G.useTeleport or forceLegacy then
         lp.Character.HumanoidRootPart.CFrame = part.CFrame + Vector3.new(0,10,0)
     else
         firetouchinterest(lp.Character.HumanoidRootPart, part, 0)
@@ -58,8 +59,8 @@ local autoLetter = MainTab:CreateButton({
     Name = "Pick up Letters",
     Callback = function()
         for i,v in ipairs(game.Workspace:GetChildren()) do
-            if v:FindFirstChild("Letter") and _G. then
-                teleport(v.Letter)
+            if v:FindFirstChild("Letter") then
+                teleport(v.Letter, true)
                 wait(0.5)
             end
         end
@@ -82,8 +83,11 @@ local autoCollectMoney = MainTab:CreateToggle({
     Callback = function(Value)
         _G.autoCollectMoney = Value
         while _G.autoCollectMoney do
-            
-            wait(_G.moneyClaimCooldown)
+            if tycoon:FindFirstChild("Collectors"):FindFirstChild("Collector") then
+                teleport(tycoon.Collectors.Collector.Touch)
+                wait(_G.moneyClaimCooldown)
+            end
+            wait(0.1)
         end
     end,
 })
