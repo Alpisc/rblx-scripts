@@ -34,6 +34,8 @@ _G.autoCollectMoney = false
 _G.autoPurchaseCooldown = 1
 _G.autoPurchaseButtons = false
 
+_G.autoNextMansion = false
+
 _G.useTeleport = false
 
 local function parsePrice(str)
@@ -138,14 +140,14 @@ local autoPurchaseButtons = MainTab:CreateToggle({
     end,
 })
 
-local autoPurchaseMansion = MainTab:CreateToggle({
-    Name = "Auto Purchase Mansion",
-    CurrentValue = _G.autoPurchaseMansion,
+local autoNextMansion = MainTab:CreateToggle({
+    Name = "Auto Next Mansion",
+    CurrentValue = _G.autoNextMansion,
     Callback = function(Value)
-        _G.autoPurchaseMansion = Value
-        while _G.autoPurchaseMansion do
+        _G.autoNextMansion = Value
+        while _G.autoNextMansion do
             for i,v in ipairs(lp.PlayerGui.MansionSelectorGui.Frame.ScrollingFrame:GetChildren()) do
-                if v:IsA("Frame") and v:FindFirstChild("Cost") and v.PurchaseButton.Visible and parsePrice(v.Cost.Text) <= lp.leaderstats.Money.Value then
+                if _G.autoNextMansion and v:IsA("Frame") and v:FindFirstChild("Cost") and v.PurchaseButton.Visible and parsePrice(v.Cost.Text) <= lp.leaderstats.Money.Value then
                     game:GetService("ReplicatedStorage").__remotes.TycoonService.PurchaseTycoon:FireServer(v.Name)
                     wait(1)
                     game:GetService("ReplicatedStorage").__remotes.TycoonService.SwitchMansion:FireServer(v.Name)
