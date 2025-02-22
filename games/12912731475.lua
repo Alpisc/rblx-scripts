@@ -4,7 +4,7 @@ local function getTycoonPlot()
     for _,v in ipairs(game:GetService("Workspace").Tycoons:GetChildren()) do
         for _2,v2 in ipairs(v:GetChildren()) do
             for _3,v3 in ipairs(v2:GetChildren()) do
-                if v3:FindFirstChild("Collectors") and v3.Collectors.Collector.CollectorGui.MainFrame.Title.Text == lp.Name .. "'s Mansion" then
+                if v3:FindFirstChild("Collectors") and string.sub(v3.Collectors.Collector.CollectorGui.MainFrame.Title.Text, 1, #lp.Name) == lp.Name then
                     if v3:FindFirstChild("GlobalButtons") then
                         v3.GlobalButtons:Destroy()
                     end
@@ -37,11 +37,8 @@ _G.autoPurchaseButtons = false
 _G.useTeleport = false
 
 local function parsePrice(str)
-    str = str:gsub("%$", "")
-    local suffix = str:sub(-1)
-    local numStr = (suffix == "K" or suffix == "M") and str:sub(1, -2) or str
-    local num = tonumber(numStr)
-    return num and (suffix == "K" and num * 1e3 or suffix == "M" and num * 1e6 or num)
+    str = str:gsub("[$,]", "")
+    return tonumber(str)
 end
 
 local function teleport(part, forceLegacy)
@@ -140,6 +137,27 @@ local autoPurchaseButtons = MainTab:CreateToggle({
         end
     end,
 })
+
+local autoPurchaseMansion = MainTab:CreateToggle({
+    Name = "Auto Purchase Mansion",
+    CurrentValue = _G.autoPurchaseMansion,
+    Callback = function(Value)
+        _G.autoPurchaseMansion = Value
+        while _G.autoPurchaseMansion do
+            for i,v in ipairs(lp.PlayerGui.MansionSelectorGui.Frame.ScrollingFrame:GetChildren()) do
+                if v:IsA("Frame") and v:FindFirstChild("Cost") and v.PurchaseButton.Visible and parsePrice(v.Cost.Text) <= lp.leaderstats.Money.Value then
+                    game:GetService("ReplicatedStorage").__remotes.TycoonService.PurchaseTycoon:FireServer(v.Name)
+                    wait(1)
+                    game:GetService("ReplicatedStorage").__remotes.TycoonService.SwitchMansion:FireServer(v.Name)
+                    wait(5)
+                    tycoon = getTycoonPlot()
+                end
+            end
+            wait(60)
+        end
+    end,
+})
+
 
 local SettingsTab = Window:CreateTab("Settings")
 
