@@ -23,6 +23,9 @@ end
 _G.moneyClaimCooldown = 3
 _G.autoCollectMoney = false
 
+_G.autoPurchaseCooldown = 1
+_G.autoPurchaseButtons = false
+
 _G.useTeleport = false
 
 local function parsePrice(str)
@@ -55,14 +58,19 @@ local Window = Rayfield:CreateWindow({
 
 local MainTab = Window:CreateTab("Main")
 
-local autoLetter = MainTab:CreateButton({
+local autoLetter = MainTab:CreateToggle({
     Name = "Pick up Letters",
-    Callback = function()
-        for i,v in ipairs(game.Workspace:GetChildren()) do
-            if v:FindFirstChild("Letter") then
-                teleport(v.Letter, true)
-                wait(0.5)
+    Value = _G.autoLetter,
+    Callback = function(Value)
+        _G.autoLetter = Value
+        while _G.autoLetter do
+            for i,v in ipairs(game.Workspace:GetChildren()) do
+                if v:FindFirstChild("Letter") and _G.autoLetter then
+                    teleport(v.Letter, true)
+                    wait(0.5)
+                end
             end
+            wait(4)
         end
     end,
 })
@@ -86,6 +94,39 @@ local autoCollectMoney = MainTab:CreateToggle({
             if tycoon:FindFirstChild("Collectors"):FindFirstChild("Collector") then
                 teleport(tycoon.Collectors.Collector.Touch)
                 wait(_G.moneyClaimCooldown)
+            else 
+                tycoon = getTycoonPlot()
+            end
+            wait(0.1)
+        end
+    end,
+})
+
+local autoPurchaseCooldown = MainTab:CreateInput({
+    Name = "Purchase Delay (in seconds)",
+    CurrentValue = _G.autoPurchaseCooldown,
+    PlaceholderText = "Purchase Delay",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(Text)
+        _G.autoPurchaseCooldown = tonumber(Text)
+    end,
+})
+
+local autoPurchaseButtons = MainTab:CreateToggle({
+    Name = "Auto Purchase Buttons",
+    CurrentValue = _G.autoPurchaseButtons,
+    Callback = function(Value)
+        _G.autoPurchaseButtons = Value
+        while _G.autoPurchaseButtons do
+            if tycoon:FindFirstChild("Buttons") then
+                for i,v in ipairs(tycoon.Buttons:GetChildren()) do
+                    if parsePrice(v.ButtonGui.Value.MainFrame.ItemPrice.Text) <= lp.leaderstats.Money.Value then
+                        teleport(v.Touch)
+                        wait(autoPurchaseCooldown)
+                    end
+                end
+            else
+                tycoon = getTycoonPlot()
             end
             wait(0.1)
         end
