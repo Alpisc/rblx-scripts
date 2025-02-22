@@ -38,6 +38,16 @@ local function parsePrice(str)
     return num and (suffix == "K" and num * 1e3 or suffix == "M" and num * 1e6 or num)
 end
 
+local function teleport(part)
+    if _G.useTeleport then
+        lp.Character.HumanoidRootPart.CFrame = part.CFrame + Vector3.new(0,5,0)
+    else
+        firetouchinterest(lp.Character.HumanoidRootPart, part, 0)
+        wait(0.1)
+        firetouchinterest(lp.Character.HumanoidRootPart, part, 1)
+    end
+end
+
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name 
@@ -70,13 +80,7 @@ local autoCollectMoney = MainTab:CreateToggle({
                 if v:IsA("Model") and _G.autoCollectMoney then
                     for _2,v2 in v.Collectors:GetChildren() do
                         if v2:IsA("Model") and _G.autoCollectMoney then
-                            if _G.useTeleport then
-                                lp.Character.HumanoidRootPart.CFrame = v2.ZonePart.CFrame + Vector3.new(0,10,0)
-                            else
-                                firetouchinterest(lp.Character.HumanoidRootPart, v2.ZonePart, 0)
-                                wait(0.1)
-                                firetouchinterest(lp.Character.HumanoidRootPart, v2.ZonePart, 1)
-                            end
+                            teleport(v2.ZonePart)
                             wait(1)
                             break
                         end
@@ -122,13 +126,7 @@ local autoPurchase = MainTab:CreateToggle({
 
                         if v2:FindFirstChild("Press") and parsePrice(v2.Press.Info.Price.TextLabel.Text) <= game.Players.LocalPlayer.leaderstats.Money.Value and _G.autoPurchase then
                             pcall(function()
-                                if _G.useTeleport then
-                                    lp.Character.HumanoidRootPart.CFrame = v2.Press.CFrame + Vector3.new(0,5,0)
-                                else
-                                    firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 0)
-                                    wait(0.1)
-                                    firetouchinterest(lp.Character.HumanoidRootPart, v2.Press, 1)
-                                end
+                                teleport(v2.Press)
                                 wait(_G.purchaseCooldown)
                             end)
                         end
